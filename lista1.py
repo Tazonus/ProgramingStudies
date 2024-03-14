@@ -2,110 +2,127 @@ import random
 import math
 
 class Vector:
-    #konstruktor z możliwością ustawienia wielkości, automatycznie wypełnia wartości 0
+    """
+    A class representing a vector.
+
+    Attributes:
+        size (int):     size of a vector
+        values(list):   holds values for vector
+        
+    """
     def __init__(self, size = 3):
+        """
+        Initializes a Vector object.
+
+        Parameters:
+            size (int): size of a vector
+        """
         if(size < 1):
-            print("Cannot make a vector : (")
+            print("Cannot make a vector :(")
             return 0
         
         self.size = size
-        self.vector = []
+        self.values = []
 
         for i in range(size):
-            self.vector.append(0)
+            self.values.append(0)
 
-    #Dobiera wektorowi losowe liczby z zakresu [-max,max], domyślnie max = 10
     def randomize(self, max = 10):
-        for i in range(self.size):
-            self.vector[i] = random.uniform(-max,max)
+        """
+        Randomizes Vector values in range
 
-    #ładuje wektor z listy
-    def load(self, lista = {0,0,0}):
-        self.vector = []
-        self.size = len(lista)
+        Parameters:
+            max (float):    defines max range [-max,max]
+        """
         for i in range(self.size):
-            self.vector.append(lista[i])
+            self.values[i] = random.uniform(-max,max)
 
-    #operator dodawania
-    #nie wyrzuca VallueError ale wychodzi na jedno bo wyskakuje przy różnych rozmiarach
-    def __add__(self, other):
-        try:
-            temp_vector = Vector(self.size)
-            for i in range(self.size):
-                temp_vector[i] = self.vector[i] + other.vector[i]
-            return temp_vector
-        except ValueError:
-            print("VallueError, róznej wielkości wektory")
-        except IndexError:
-            print("IndexError choć miał być VallueError, na jedno wychodzi, nie można przeprowadzić operacji przez róznej wielkości wektory")            
-        
-    #operator odejmowania
-    #to samo co powyżej w kwesti VallueError
-    def __sub__(self,other):
-        try:
-            temp_vector = Vector(self.size)
-            for i in range(self.size):
-                temp_vector[i] = self.vector[i] - other.vector[i]
-            return temp_vector
-        except ValueError:
-            print("VallueError, róznej wielkości wektory")
-        except IndexError:
-            print("IndexError choć miał być VallueError, na jedno wychodzi, nie można przeprowadzić operacji przez róznej wielkości wektory")    
+    def load(self, input):
+        '''Loads vector from list'''
+        self.values = []
+        self.size = len(input)
+        for i in range(self.size):
+            self.values.append(input[i])
     
-    #operator mnożenia używany do
-    #a) mnożenia przez skalar
-    #b) iloczynu skalarnego
-    #sprawdza czy to z czym się mnoży(other) jest floatem, jak wyłapie error to znaczy że nie i próbuje od razu przejść do mnożenia z drugim wektorem
-    def __mul__(self, other):
-        isfloat = True
+    def __add__(self, other):
+        '''Adding operator'''
         try:
-            float(other)
-        except TypeError:
-            isfloat = False
+            temp_vector = Vector(self.size)
+            for i in range(self.size):
+                temp_vector[i] = self.values[i] + other.values[i]
+            return temp_vector
+        except ValueError:
+            print("VallueError, Different size vector")
+        except IndexError:
+            print("IndexError, Different size vector")                   
 
-        if(isfloat):    
+    def __sub__(self,other):
+        '''subtract operator'''
+        try:
+            temp_vector = Vector(self.size)
+            for i in range(self.size):
+                temp_vector[i] = self.values[i] - other.values[i]
+            return temp_vector
+        except ValueError:
+            print("VallueError, Different size vector")
+        except IndexError:
+            print("IndexError, Different size vector")    
+    
+    def __mul__(self, other):
+        '''Multiplying operator used to multiply by scalar or dot product'''
+
+        if(isinstance(other,(float,int))):    
             temp_vector = []
             for i in range(self.size):
-                temp_vector.append(other * self.vector[i])
+                temp_vector.append(other * self.values[i])
             return temp_vector
-        elif(self.size == other.size):
-            skalar = 0
-            for i in range(self.size):
-                skalar += self.vector[i] * other.vector[i]
-            return skalar
+        
+        elif(isinstance(other,Vector)):
+            try:
+                scalar = 0
+                for i in range(self.size):
+                    scalar += self.values[i] * other.values[i]
+                return scalar
+            except ValueError:
+                print("VallueError, Different size vector")
+            except IndexError:
+                print("IndexError, Different size vector")  
             
-    #zwraca długość wektora    
     def length(self):
+        '''Returns length of vector'''
         len = 0
         for i in range(self.size):
-            len += pow(self.vector[i],2)
+            len += pow(self.values[i],2)
         return math.sqrt(len)
     
-    #zwraca sume elementów wektora
     def sum(self):
+        '''Returns Sum of Vector values'''
         sum = 0
         for i in range(self.size):
-            sum += self.vector[i]
+            sum += self.values[i]
         return sum
     
     #Daniel
     def print(self):
-        print(self.vector)
+        '''prints all values, but you can also use print(YourVector)'''
+        print(self.values)
     
     #The Cooler Daniel
     def __str__(self):
-        return f"{self.vector}"
+        '''Returns vector as a string'''
+        return f"{self.values}"
     
-    #operator [] służacy do podejrzenia wartości  - Getter
     def __getitem__(self, key):
-        return self.vector[key]
-    #operator [] służący do przypisania wartości  - Setter
+        '''[] operator getter'''
+        return self.values[key]
+    
     def __setitem__(self, key, value):
-        self.vector[key] = value
+        '''[] operator setter'''
+        self.values[key] = value
 
-    #operator in sprawdzający przynależność elementu do wektora.
     def __contains__(self, item):
-        return item in self.vector
+        '''in operator'''
+        return item in self.values
 
 
 myVector = Vector()
