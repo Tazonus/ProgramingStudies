@@ -23,14 +23,48 @@ print(gen_pass())
 
 #Zad 6:
 
-#need to change that shitty name later
-class grid_calc:
-    def __init__(self, equation ='1+2-3'):
-        equation =equation.replace('-','+-')
-        print(equation)
-        self.equation_List = equation.split('+')
-        print(self.equation_List)
+print("Zad:6")
 
+class grid_calc:
+    """Calculates in grid"""
+    def __init__(self, equation = '235+72'):
+        max = 0
+        result = 0
+
+        equation = equation.replace('-','$-')
+        equation = equation.replace('+','$+')
+        nums_str = equation.split('$')
+
+        for x in nums_str:
+            if('-' in x):
+                x = x.removeprefix('-')
+            elif('+' in x):
+                x = x.removeprefix('+')
+        
+            if max < len(x):
+                max = len(x)
+        
+            max +=1
+            # to make gap between numbers and signs
+        for x in nums_str:
+            result += int(x)
+            spaces = max - len(x)
+            if('-' in x):
+                
+                x = x.replace('-','-' + self.make_space(spaces))
+            elif('+' in x):
+                x = x.replace('+','+' + self.make_space(spaces))
+            else:
+                x = self.make_space(spaces) + x
+            print(x)
+
+        result = str(result)
+        print(self.make_space(max,'-'))
+        print(self.make_space(max - len(result)-1), result)
+
+    def make_space(self, howmany, ch = ' '):
+        """Returns line of characters, if not specified returns spaces"""
+        return ch * howmany
 
 
 
