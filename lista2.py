@@ -1,5 +1,6 @@
 import random
-
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
 
 #Zad 1:
 def gen_pass(length = 8):
@@ -11,19 +12,29 @@ def gen_pass(length = 8):
         temp_pass += random.choice(printable_ASCII)
     return temp_pass
 
-print(gen_pass())
-print(gen_pass())
-print(gen_pass())
-
 #Zad 2,5:
 
+class Watermarker:
+    def __init__(self, imagePath, watermarkPath, set_size, name):
+        im = Image.open(imagePath)
+        watermark = Image.open(watermarkPath)
+
+        im = im.resize(set_size).convert('RGBA')
+        watermark = watermark.resize([im.width//2, im.height//2]).convert('RGBA')
+        watermark_data = watermark.getdata()
+        watermark_data = [(r, g, b, (a*3)//4) for r, g, b, a in watermark_data]
+        watermark.putdata(watermark_data)
+        
+        canvas = Image.new('RGBA', set_size, (0, 0, 0, 0))
+        canvas.paste(watermark, (0, 0), mask=watermark,)
+        final_image = Image.alpha_composite(im.convert('RGBA'), canvas)
+        final_image.show()
+        
 #Zad 3:
 
 #Zad 4:
 
 #Zad 6:
-
-print("Zad:6")
 
 class grid_calc:
     """Calculates in grid"""
@@ -67,8 +78,14 @@ class grid_calc:
         return ch * howmany
 
 
+if __name__ == '__main__':
+    print("Zad:1")
+    print('Generated password:',gen_pass())
+ 
+    path1 = "image1.jpg"
+    path2 = "/home/tazos/Documents/pwr/Programowanie/image2.jpg"
+    Watermarker(path1, path2, [440,880], 'testname')
 
-grid_calc()
-        
 
-
+    print("Zad:6")
+    grid_calc()
