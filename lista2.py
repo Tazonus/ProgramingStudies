@@ -1,6 +1,8 @@
 import random
-from PIL import Image, ImageDraw, ImageFont
-import matplotlib.pyplot as plt
+from PIL import Image
+import zipfile 
+import os
+from datetime import date
 
 #Zad 1:
 def gen_pass(length = 8):
@@ -14,7 +16,7 @@ def gen_pass(length = 8):
 
 #Zad 2,5:
 
-class Watermarker:
+class WaterMarker:
     def __init__(self, imagePath, watermarkPath, set_size, name):
         im = Image.open(imagePath)
         watermark = Image.open(watermarkPath)
@@ -32,11 +34,21 @@ class Watermarker:
         
 #Zad 3:
 
+def zip_dir(path):
+
+    ziph = zipfile.ZipFile(f"Backup from {str(date.today())}", "w")
+    for root, dirs, files in os.walk(path):
+        ziph.write(root)
+        for file in files:
+            ziph.write(os.path.join(root,file))
+    ziph.close()
+
+
 #Zad 4:
 
 #Zad 6:
 
-class grid_calc:
+class gridCalc:
     """Calculates in grid"""
     def __init__(self, equation = '235+72'):
         max = 0
@@ -81,11 +93,14 @@ class grid_calc:
 if __name__ == '__main__':
     print("Zad:1")
     print('Generated password:',gen_pass())
- 
-    path1 = "image1.jpg"
-    path2 = "/home/tazos/Documents/pwr/Programowanie/image2.jpg"
-    Watermarker(path1, path2, [440,880], 'testname')
-
 
     print("Zad:6")
-    grid_calc()
+    gridCalc()
+
+    #zad 2,5
+    path1 = "/home/tazos/Documents/pwr/Programowanie/image1.jpg"
+    path2 = "/home/tazos/Documents/pwr/Programowanie/image2.jpg"
+    WaterMarker(path1, path2, [440,880], 'testname')
+
+    #zad3
+    zip_dir("/home/tazos/Documents/pwr/Programowanie")
