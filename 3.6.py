@@ -8,15 +8,18 @@ def shuffle():
     site = requests.get(url)
     soupRP = BeautifulSoup(site.text, "html.parser")
     title = soupRP.find("h1", {"id": "firstHeading"}).text
-    print(title)
+    return title
 
 def main():
     notFound = True
     while(notFound):
-        shuffle()
+        title = shuffle()
+        print(title)
         choice = input("czy jesteś zainteresowany artykułem? (y/n)")
         if choice.lower() == 'y':
             notFound = False
-            
+            link = "https://en.wikipedia.org/wiki/" + title
+            webbrowser.open(link)
+
 if __name__ == "__main__":
     main()
