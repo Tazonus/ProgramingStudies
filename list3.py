@@ -1,16 +1,17 @@
 import re
-ascii_table = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 brackets_open = "{[(<"
 brackets_close = ">)]}"
 
-#removing all brackets from ascii table
-ascii_table = re.sub(brackets_open,'',ascii_table)
-ascii_table = re.sub(brackets_close,'',ascii_table)
-
+#removing all symbols except brackets
 input = input("Write equation you want to check: \n")
-brackets_only = re.sub(r"[\([{})\]]", "", input)
-
-print(brackets_only)
-
-#for x in input:
-    
+tempvector = []
+for x in input:
+    if x in brackets_open:
+        tempvector.append(x)
+    elif x in brackets_close:
+        if tempvector[-1] == x:
+            tempvector.pop
+if tempvector == []:
+    print("expresion is valid")
+else:
+    print('expresion is invalid')#or my code is bad
