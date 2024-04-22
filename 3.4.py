@@ -24,8 +24,15 @@ def make():
         box_size=10,
         border=4,
     )
+    data = ''
+    try:
+        input = open(sys.argv[1])
+        for line in input:
+            data += line
+    except:
+        data = sys.argv[1]
 
-    qr.add_data(sys.argv[1])
+    qr.add_data(data)
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
@@ -35,6 +42,10 @@ def make():
         img.save('qr.jpg')
 
 def main():
+    if sys.argv[1].lower == 'scan':
+        scan()
+    else:
+        make()
 
 if __name__ == "__main__":
     main()
