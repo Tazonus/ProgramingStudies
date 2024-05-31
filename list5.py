@@ -23,6 +23,8 @@ class CurencyConverter:
         #Window Setup
         self.root.title("Curency Converter")
         self.root.geometry("500x450")
+        exit_button = tk.Button( text="Exit", command=self.root.quit)
+        exit_button.grid(row = 0, column = 300)
 
         #Curently used database info
         self.storage_path='exchange_rates.json'
